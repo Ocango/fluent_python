@@ -2,14 +2,23 @@
 本项目基于Luciano Ramalho的《Fluent Python》，属于个人练习。
 # Section1 Python 的数据类型
 ## 双下方法
+
 __len__(self):#len()
+
 __getitem__(self,mark):#items[i]
+
 __init__(self):#item = Item()
+
 __repr__(self):#print(item)
+
 __abs__(self):#abs(item)
+
 __bool__(self):#if item:
+
 __add__(self ,other):#item + other
+
 __mul__(self, scalar):#item * scalar
+
 ## 序列
 ### 列表推导
 [i for i in range(10)]
@@ -19,9 +28,11 @@ __mul__(self, scalar):#item * scalar
 a,b = b,a
 ### 切片
 l[::-2]
+
 l[:5] = []
 ### 序列的增量赋值
 m = l*5
+
 m += [1,2]
 
 ### 一个奇怪的现象
@@ -39,6 +50,7 @@ print(t)
 ```
 ### sorted(lists)与list.sort()
 区别sorted会新建列表作为返回值
+
 而list.sort只是对当前list进行操作
 ### 已排序搜索和插入
 ```
@@ -64,6 +76,7 @@ fp.close()
 ```
 ### 内存视图memoryview
 泛化和去数学化的NumPy数组，实现在数据结构之间共享内存。用以处理大型数据集合
+
 注意共享内存的意思是对memoryview的操作不会产生新的对象！！！这也是其高效的原因
 ### NumPy 与 SciPy
 ```
@@ -120,6 +133,7 @@ int，float，bool，complex，str(字符串)，list，dict(字典)，set，tupl
 {country : code for code,country in [(1,'China'),(2,'EN')]}
 ### setdefault
 index.setdefault(word,[]).append(location)
+
 word不存在赋值[]，然后接着执行
 ### __missing__
 ```
@@ -142,11 +156,16 @@ mm = defaultdict(lambda : '<missing>')
 d_proxy = MappingProxyType({})
 ## 集合
 集合去重无序
+
 支持很多中缀运算符  |合集   &交集   -差集
+
 集合可以类比数学运算符
+
 &   |   -   ^   in  <=  <   >=  >
+
 ### 散列表
 ![散列表原理](.\hash_table.png)
+
 而dict和set都是可散列的，简单点说，他们的键都是不可重复的，原因可以看如下
 ```
 def __hash__(self):
@@ -158,13 +177,19 @@ def __eq__(self, other):
         return False  
 ```
 由此__eq__的定义我们也能知道为什么可哈希集合？==？
+
 散列表的问题在于内存开销巨大
+
 另外在散列表中新增会导致重新分配内存。同时迭代与更新散列表是一件危险的事
 ## 字符
 str对象中获得的元素都是Unicode字符
+
 何为字符：
+
 以4~6个十六进制数表示码位
+
 字符的具体表述取决于其编码，编码是在码位和字节序列转换用的算法
+
 ### 编码规范申明
 ```
 #!/usr/bin/python
@@ -172,6 +197,7 @@ str对象中获得的元素都是Unicode字符
 ```
 ### 编码解码
 Unicode字符     encode 编码     字节序列
+
                 decode 解码
 
 ### 字节序标记byte-order mark
@@ -181,11 +207,15 @@ Unicode字符     encode 编码     字节序列
 - 尽早解码成字符串
 - 处理过程中尽量不进行编码和解码
 - 编码输出文本
+
 ！open file时始终明确编码，因为open文件时使用的是默认系统编码
+
 ！推举：chardet进行编码测试
 ### 编码默认值
 在open文件时：系统默认编码
+
 在输出输入控制台时：控制台的编码
+
 而python3系统内部：使用utf-8
 ### 为了比较Unicode字符
 ```
@@ -203,6 +233,7 @@ def nfc_equal(str1,str2):
 ```
 ### 大小写折叠
 str.casefold()
+
 类似str.lower()，但是其规范了一些特殊符号的大小写问题
 
 通过上述两个函数进行Unicode规范化和大小写折叠都是符合Unicode标准的
@@ -228,6 +259,7 @@ pyuca.Collator.sort_key
 
 ### 双模式API
 import re,os
+
 为了处理str和bytes不同情况
 
 # Section2 将函数视为对象
@@ -254,29 +286,46 @@ sorted(fruits,key = lambda word : word[::-1])
 ```
 ### 可调用对象
 用户定义的函数
+
 def/lambda
+
 内置函数
+
 len/time.strftime
+
 内置方法
+
 dict.get
+
 方法
 
 类
+
 __new__()
+
 类的实例
+
 __call__()
+
 生成器函数
+
 yield
 
 可以通过callable(obj)确认对象是否可以调用
+
 只要任何对象实现__call__()即可表现的像函数
 
 ### 函数内省
 dir(class) #探知属性
+
 __dict__() #注解
+
 __annotations__() #参数和返回值的注解
+
 __call__() #实现()运算符
+
 __defaults__ #形式参数的默认值
+
 __code__() #编译成字节码的函数元数据和函数定义体
 
 ### 参数
@@ -322,6 +371,7 @@ g(b) === b.name(*args,**kwargs)
 #返回一个可调用对象!
 '''
 ```
+
 运算	|	Syntax	|	Function
 :-: | :-: | :-:
 Addition	|	a + b	|	add(a, b)
@@ -380,10 +430,13 @@ list(map(triple,range(1,10)))
 ## 设计模式
 ### 迭代 策略模式
 定义一系列算法，把他们一一封装起来，并使得他们可以互相替换。本模式使得算法可以独立于使用它的客户而变化
+
 ![策略模式](.\picture\strategy.png)
 ### 迭代 命令模式
 抽象命令、继承抽象命令 实例化命令接受者 实现具体命令、定义命令接受者 接受者具体实现方法、定义命令调用者 
+
 最后客户端实例化命令接受者、命令调用者，通过命令接受者实例化命令，命令调用者再执行具体命令。
+
 ![命令模式](.\picture\command.png)
 
 这两者都因为Python把函数作为一等对象，所以我们可以不给调用者\算法一个实际的对象，直接给函数就好。
@@ -396,6 +449,7 @@ list(map(triple,range(1,10)))
 # Section3 decorator&closure
 ## what
 装饰器相当于用装饰器调用被装饰的函数
+
 同时装饰器在函数**定义/导入**以后立刻运行
 ## 用装饰器优化策略模式
 ```
@@ -411,10 +465,12 @@ def fidelity(order):
 ```
 ## 变量作用域
 当需要让解释器将函数体内变量作为全局变量
+
 需要在函数体内标记global
 
 ## 闭包
 一般情况下，如果一个函数结束，函数的内部所有东西都会释放掉，还给内存，局部变量都会消失。但是如果满足闭包的条件，外函数在结束的时候发现有自己的临时变量将来会在内部函数中用到，就把这个临时变量绑定给了内部函数，然后自己再结束。
+
 这种临时变量叫做自由变量，整个外函数则形成了闭包。
 
 这里有一个问题要解决：不可变类型不会自觉变成自由变量，需要（因为不可变变量会自觉隐式创建局部变量）
@@ -449,6 +505,7 @@ print('*'*40 , 'Calling factorial(6)')
 print('6! = ',factorial(6))
 ```
 动态的给一个对象增加一些额外的责任
+
 迭代
 
 ```
@@ -470,10 +527,12 @@ def clock2(func):
         print('[%0.8fs] %s(%s) -> %r' % (elapsed,name,arg_str,result))
     return clocked
 ```
+
 functools.wraps将func中__name__&__doc__属性复刻到clocked中（保留原函数的属性，装饰器毕竟会将原函数替换为内函数），协助构建行为良好的装饰器
 ## 标准库的装饰器
 ### functools.lru_cache()
 备忘功能，可以将耗时的函数结果保存下来，以防止传入相同的参数重复计算
+
 最常见的参考就是斐波那契了
 ```
 @functools.lru_cache()
@@ -489,10 +548,12 @@ print(fibonacci(30))
 
 ### 单分派泛函数functools.singledispatch
 因为python不支持重载，所以带来了它
+
 根据第一个参数的类型选择专门的函数
 ## 叠放装饰器
 ## 参数化装饰器
 工厂函数。怎么让装饰器接受其他参数呢？那就让装饰器装饰装饰器
+
 **定义一个装饰器工厂函数，返回装饰器**
 ### 参数化clock
 更新并返回表示当前本地符号表的字典。 在函数代码块但不是类代码块中调用 locals() 时将返回自由变量。 请注意在模块层级上，locals() 和 globals() 是同一个字典。
@@ -506,9 +567,11 @@ print(fibonacci(30))
 ，但是引用的可变对象的值还是可变的
 ## 默认做浅复制
 利用构造方法和切片创建的多数内置可变集合都是浅复制
+
 即复制了外部容器，但是内部的引用还是不变的。
 ## 深复制和浅复制
 import copy
+
 同时通过__copy__()&__deepcopy__()定义copy和deepcopy的行为
 ## python只支持共享传参！
 即函数内部的形式参数是实参的中各个引用的副本（浅复制哦）
@@ -516,9 +579,11 @@ import copy
 来看多图警告：
 
 ![直接指向可变对象](.\picture\直接指向可变对象.png)
+
 ![直接指向可变对象的结果](.\picture\直接指向可变对象的结果.png)
 
 问题在于python中存在__init__.__default__寄存默认值，可变变量作为默认值在加载模块式就已经确定了，直接用，危险危险！
+
 比较好的办法就是用**利用构造方法和切片创建的多数内置可变集合进行浅复制**代替等号这种直接赋值的方法
 ## del和对象回收
 > 对象绝对不会自行销毁；然而无法获得对象时，可能会被当做垃圾回收。
@@ -544,7 +609,9 @@ print(ender.alive)
 ### weekref.ref获取所指对象
 ### weekref.WeakKeyDictionary实现可变映射
 里面的值是对象的弱引用
+
 但是不是所有的对象都可以作为弱引用的目标
+
 一些更加邪道的特性就不多说了，涉及到编辑器的实现
 
 # Section5 duck type,python风格的对象
@@ -594,16 +661,20 @@ __format__()
 
 ## 私有属性，受保护的属性
 python不支持直接定义私有属性，通过将python的属性定义为有两个前导下划线的属性名，python会自觉的将此属性归类到实例的__dict__中，并且前面还会加上```_type(self).__name__```例如如下：_Vector__x
+
 以此防止子类覆盖私有属性：简单点说就是没有私有属性这个概念，而是投机取巧，只能预防
 所以其实是可以通过```_Vector__x```去修改`私有属性`的值
+
 所以其实在python中大家约定俗成的使用_单个前导下划线去自行约束自己的行为，虽然编译器不会去辅助你，但你可以辅助自己
 
 ## __slots__属性
 在类中定义slots后，实例将不会有除了slots中的其他东西
+
 但是__slots__确实是一种优化手法，有利于节省内存
 
 ## 覆盖类属性
 类属性实例可以直接调用修改，这样就变成实例自己的属性了
+
 但是更好的方法是
 ### 继承子类
 简单点说就是前面的问题，用子类去覆盖父类的属性
@@ -613,6 +684,7 @@ python不支持直接定义私有属性，通过将python的属性定义为有�
 
 # Section6 序列的修改、散列和切片
 之前就有涉猎，python中创建完善的序列不需要使用继承，只需要符合序列协议的方法。这有点像建立在低级语言与编译器交互的逻辑上，但是却是使用的非正式的接口
+
 序列主要的两个方法就是__len__()与__getitem__()
 
 所以，因为行为想序列，所以我们才说他是序列，这就是python中所谓的鸭子模型
@@ -620,7 +692,9 @@ python不支持直接定义私有属性，通过将python的属性定义为有�
 ## 可切片的序列
 ### 切片的实现原理
 dir(slice)
+
 help(indices)
+
 S.indices(len) ——> (start,stop,stride)
 ```这也是切片为嘛要知道len的原因```
 ### 实现切片返回Vector对象
@@ -644,9 +718,11 @@ S.indices(len) ——> (start,stop,stride)
 ```
 ## 动态存取属性
 属性查找失败时，解释器会调用__getattr__方法
+
 所以传说中的只读属性可以通过一种另类的方法来体现
 ### 问题：setattr
 但是上述的问题，这种不存在的属性，影响了赋值的体现，即看得到，能赋值，但是没有效果(不存在的值会被记录为此对象类属性)
+
 所以我们需要setattr避免异常表现
 ```
     def __setattr__(self,name,value):
@@ -671,6 +747,7 @@ S.indices(len) ——> (start,stop,stride)
 协议让python对象在系统中扮演特定的角色
 ## 回到我们的扑克类
 原先的扑克类是一个不可变序列，因为我们没有__setitem__
+
 所以我们可以在运行时补上
 ```
 def set_card(deck,position,card):
@@ -680,17 +757,21 @@ FrenchDeck.__setitem__ = set_card
 shuffle(deck)
 ```
 我们将这种模式叫做猴子补丁
+
 由此我们亦可以看出我们的协议是动态的，他并不在乎你的类型是啥，只要对象实现了对应的可变序列协定即可
 
 ## 这是一个大家庭
 ### collections.abc
 ![collections.abc](.\picture\collections.abc.png)
+
 - Iterable,Container,Sized
 
 基本所有人要实现的协议，主要体现在__iter__()支持迭代,__contains__()支持in运算符,__len__()支持len函数
+
 - Sequence,Mapping,Set
 
 不可变集合，Mutablexxx是他们可变的子类
+
 - MappingView
 
 .item(),.keys()和.values()返回的分别是ItemView、KeysView、ValuesView的实例
@@ -705,6 +786,7 @@ Iterable的子类
 
 ### 抽象基类的数字塔
 import numbers
+
 - Number
 - Complex
 - Real
@@ -713,6 +795,7 @@ import numbers
 
 ## 继承
 首先有个问题，内置类型的方法不会调用子类覆盖的方法，比如dict的子类覆盖了__getitem__()，其不会被内置类型的get()方法调用
+
 所以子类化内置类型有各种各样的问题，所以，请子类化collections模块
 ## 多重继承的解析顺序
 ### 类的__mro__属性
@@ -747,6 +830,7 @@ def __add__(self,other):
 ```
 ### 那么b+a呢？
 a+b的检查顺序：检查a有__add__，检查b有__radd__
+
 那么投机取巧下：
 ```
 def __radd__(self,other):
@@ -775,20 +859,26 @@ def __rmul__(self,scalar):
 ```
 ## 其他的运算符
 注意哦，a+b的检查顺序应用到了很多运算符。比如==，同时还有后备机制（都不行时），同时也有一个问题，要返回NotImplemented才会继续检查下去
+
 ![比较运算符](.\picture\比较运算符.png)
+
 这其实一个问题，程序员讨厌惊喜
 
 # Section9 控制流程
 迭代器，生成器，牛皮。一定程度避免了直接生成结果导致资源的极度浪费
 ## 单词序列
 序列可以迭代的原因
+
 当解释器需要迭代对象时，会自动调用iter()
+
 而内置的iter行为如下
+
 1.检查对象是否实现了__iter__,若果实现就调用并返回一个迭代器
 2.如果没有，就调用__getitem__从零开始自行迭代
 3.如果还是不行，那就返回TypeError
 
 这种查询方式就是经典的鸭子类型，如果换成白鹅类型，如下：
+
 只检查__iter__的实现，因为Iterable实现了__subclasshook__，默认包揽所有实现__iter__就不用大家去继承抽象基类Iterable了
 
 而实际Iterator的实现由两部分组成：*__next__()*,__iter__()
@@ -848,6 +938,7 @@ for name in ap:
 就是把上文class的__iter__拆出来了，不说话
 ### itertools模块
 标准库中的生成器
+
 ![用于过滤的生成器](.\picture\用于过滤的生成器.png)
 ![用于映射的生成器](.\picture\用于映射的生成器.png)
 ![合并多个可迭代对象的生成器](.\picture\合并多个可迭代对象的生成器.png)
@@ -883,6 +974,7 @@ while条件为假时
 没有异常时执行
 
 发现一件事，这本书处处都在批判Guide对于语法糖和添加关键字，唯恐避之不及的态度的抱怨
+
 不过确实是，虽然这种方法减少了语法糖，但是，理解难度也高了
 
 ## 上下文管理器
@@ -1048,6 +1140,7 @@ excet StopIteration as exc:
 
 # Section12 并发
 你觉得并发要了解到什么程度？
+
 > 如何派生出一堆独立的线程，然后用队列收集结果。
 ## 并发都是因为IO延时
 ### 网络下载的三种风格
@@ -1074,12 +1167,15 @@ asyncio包
 ```
 ### 优化版的下载处理
 包介绍tqdm
+
 一个进度条工具，根据可迭代对象的__len__和__iter__属性计算可迭代对象的时间
 
 工具Toxiproxy
+
 实际上是一个代理工具，但是又不是简单的进行代理（tcp，可以配置策略，toxics 实现延迟，模拟故障
 
 Celery
+
 任务队列
 ### threading与multprocessing
 
@@ -1170,16 +1266,23 @@ world
 #### 加载协程的方法
 1. asyncio.run() 函数用来运行最高层级的入口点 "main()" 函数 (参见上面的示例。)
 2. asyncio.create_task() 函数用来并发运行作为 asyncio 任务 的多个协程。
+
 这里面其实涉及两个方面
+
 一个是await直接等待协程方法执行结束
+
 另一个是await asyncio.create_task()对象，从而实现并发
 #### 可等待对象的定义
 如果一个对象可以在 await 语句中使用，那么它就是 可等待 对象。许多 asyncio API 都被设计为接受可等待对象。
 
 可等待 对象有三种主要类型: 协程, 任务 和 Future.
+
 1. 协程
+
 协程函数: 定义形式为 async def 的函数;
+
 协程对象: 调用 协程函数 所返回的对象。
+
 当然还有基于生成器的老版协程
 ```
 @asyncio.coroutine
@@ -1187,8 +1290,11 @@ def old_style_coroutine():
     yield from asyncio.sleep(1)
 ```
 2. 任务
+
 当一个协程通过 asyncio.create_task() 等函数被打包为一个 任务，该协程将自动排入日程准备立即运行:
+
 3. Future
+
 Future 是一种特殊的 低层级 可等待对象，表示一个异步操作的 最终结果。
 
 当一个 Future 对象 被等待，这意味着协程将保持等待直到该 Future 对象在其他地方操作完毕。
@@ -1212,63 +1318,94 @@ async def main():
 
 #### 方法库
 1. 运行 asyncio 程序
+
 asyncio.run(coro, *, debug=False)
+
 此函数运行传入的协程，负责管理 asyncio 事件循环并 完结异步生成器。
+
 当有其他 asyncio 事件循环在同一线程中运行时，此函数不能被调用。
 
 2. 创建任务
 asyncio.create_task(coro)
+
 将 coro 协程 打包为一个 Task 排入日程准备执行。返回 Task 对象。
 
 3. 休眠
+
 coroutine asyncio.sleep(delay, result=None, *, loop=None)
+
 阻塞 delay 指定的秒数。
+
 如果指定了 result，则当协程完成时将其返回给调用者。
 
 4. 并发运行任务
+
 awaitable asyncio.gather(*aws, loop=None, return_exceptions=False)
+
 并发 运行 aws 序列中的 可等待对象。
 
 5. 屏蔽取消操作
+
 awaitable asyncio.shield(aw, *, loop=None)
+
 保护一个 可等待对象 防止其被 取消。
 
 6. 超时
+
 coroutine asyncio.wait_for(aw, timeout, *, loop=None)
+
 等待 aw 可等待对象 完成，指定 timeout 秒数后超时。
+
 函数将等待直到目标对象确实被取消，所以总等待时间可能超过 timeout 指定的秒数。
 
 7. 简单等待
+
 coroutine asyncio.wait(aws, *, loop=None, timeout=None, return_when=ALL_COMPLETED)
+
 并发运行 aws 指定的 可等待对象 并阻塞线程直到满足 return_when 指定的条件。
 
 asyncio.as_completed(aws, *, loop=None, timeout=None)
+
 并发地运行 aws 集合中的 可等待对象。返回一个 Future 对象的迭代器。返回的每个 Future 对象代表来自剩余可等待对象集合的最早结果。
 
 8. 来自其他线程的日程安排
+
 asyncio.run_coroutine_threadsafe(coro, loop)
+
 向指定事件循环提交一个协程。线程安全。
+
 返回一个 concurrent.futures.Future 以等待来自其他 OS 线程的结果。
 
 9. 内省
 
 10. Task 对象
+
 - class asyncio.Task(coro, *, loop=None)
 - cancel()
+
 请求取消 Task 对象。
+
 - cancelled()
+
 如果 Task 对象 被取消 则返回 True。
+
 - done()
+
 如果 Task 对象 已完成 则返回 True。
+
 - result()
+
 返回 Task 的结果。
+
 - exception()
+
 返回 Task 对象的异常。
 
 ## aiohttp
 asyncio实现了TCP、UDP、SSL等协议，aiohttp则是基于asyncio实现的HTTP框架
 ### async with
 异步上下文管理器”async with”
+
 异步上下文管理器指的是在enter和exit方法处能够暂停执行的上下文管理器。
 ### 主要示例
 ```
@@ -1285,9 +1422,13 @@ async def download_many(cc_list):
 
 ## 更进一步的理解 阻塞性调用
 ![阻塞性调用](.\picture\阻塞性调用.png)
+
 - 将阻塞性操作交给线程
+
 在线程或者进程池中执行代码。
+
 awaitable loop.run_in_executor(executor, func, *args)
+
 安排在指定的执行器中调用 func 。
 ```
 import asyncio
@@ -1334,12 +1475,15 @@ asyncio.run(main())
 semaphore = asyncio.Semaphore(concur_req)#限制并发量的同步装置
 ```
 初始化计数器
+
 semaphore = asyncio.Semaphore(concur_req)
 
 计数器减一
+
 semaphore.acquire()
 
 计数器加一
+
 semaphore.release()
 
 当计数器小于等于零则堵塞协程，或者用async with semaphore:当上下文使用，自动控制
@@ -1351,9 +1495,11 @@ semaphore.release()
 ## 聊个天
 ### 回调地狱
 为什么会有yield from ，又为什么会有回调呢？其实这是一个很简单的问题，很远的前方就说过，要预防阻塞性调用，即各种I/O操作对CPU性能的浪费，CPU默默地角落里哭泣，你又让他等硬盘写入，还让他等不知道多久以后才会有返回的TCP链接，CPU心里苦你知道吗！
+
 为什么认为回调是地狱呢？其实回调不管嵌套不嵌套，第一点难以理解，这还好，最大的问题是闭包，这是一个和垃圾回收机制有关的问题，函数调用会在结束时把其作用域没有失去关联的变量全部回收，回调很容易陷入：哎，为嘛取不到变量值？然后设定一大堆全局变量接参的故事。
 ### 每次循环多个请求
 线程版很简单，阻塞线程两次就好了
+
 协程也简单，委托给两个协程就好
 
 ## TCP通信模块
@@ -1388,6 +1534,7 @@ async def handle_queries(reader,writer):
 # Section13 动态属性和特性
 ## 动态属性访问JSON类数据
 逻辑上很简单，即json对象转化为python原生对象时正常都是dict或者list，我们只能用feed['Schedule'][40]['name']之类的方法去访问dict或者list结构，但是点属性的方式是否更加nice呢？比如feed.Schedule[40].name这样的效果。
+
 所以我们会去构造类的属性获取方法，__getattr__(self,name)，处理dict或者list结构。
 ```
     @classmethod
@@ -1401,9 +1548,11 @@ async def handle_queries(reader,writer):
 ```
 ## 处理无效属性名
 有一个问题：python保留字导致属性无法访问，比如grad.class
+
 当然我们可以这么做：getattr(grad,'class')
 
 还有一个问题：无效标识符导致属性无法访问（python3可以根据str.isidentifier()判定str是否为有效标识符）
+
 常见的方法是替换为通用名称或者抛出异常
 
 ## 使用new方法以灵活的方式创建对象
@@ -1695,6 +1844,7 @@ class NonBlank(Validated): #实现非空字串验证
 ## 描述符类型
 ### 覆盖性描述符
 因为实现__set__方法会覆盖实例属性的赋值操作，所以叫覆盖型描述符
+
 而又由于存在__get__方法，常规读操作也会被描述符操作替代
 
 这种方法，描述符会覆盖属性，无法用常规方法访问
@@ -1720,14 +1870,19 @@ Managed.spam 获取的是函数
 所以函数体现出来其实就是个非覆盖性描述符
 ## 描述符用法
 1. 使用特性以保持简单
+
 内置property其实是覆盖性描述符，所以创建只读最好的方法就是用特性
 2. 只读描述符必须要有__set__方法
+
 为防止同名属性覆盖描述符，实现只读时，__get__、__set__都应该实现,__set__抛出AttributeError异常
 3. 用于验证的描述符可以只有__set__方法
+
 赋值验证最快捷的方法就是在__set__中检查，并最后在示例__dict__属性中设置
 4. 仅有__get__方法的描述符可以实现高效缓存
+
 这种方法用在get比较耗CPU时，之后可以用实例同名属性缓存结果
 5. 非特殊方法可以被实例属性覆盖
+
 因为特殊方法是基于x.__class__.__repr__(x)访问的，简单点说是类方法，所以不会被实例属性覆盖，但是非特殊方法__get__就会了。
 
 # Section15 类元编程
